@@ -1,12 +1,31 @@
 version: '3.9'
 services:  
-  mongodb: 
-    image: mongo:4
+  postgres: 
+    image: postgres
     environment: 
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: 
+      - 5432:5432
+    networks:
+      - multidb
+  adminer: 
+    image: adminer
+    ports: 
+      - 8080:8080
     networks: 
       - multidb
+  mongodb: 
+    image: mongo:4
+    ports:
+      - 27017:27017
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks: 
+      - multidb
+
   mongoclient: 
     image: mongoclient/mongoclient
     ports: 

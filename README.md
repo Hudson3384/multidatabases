@@ -55,5 +55,8 @@ docker exec -it mongodb \
 ```
 
 All of this was replaced to docker-composer.yml 
+```
 
-
+docker-compose exec -it mongodb mongo --host localhost -u admin -p admin --authenticationDatabase admin --eval "db.getSiblingDB('heros').createUser({user: 'hudson', pwd: 'admin',
+roles: [{role: 'readWrite', db: 'heros'}]})"
+```
