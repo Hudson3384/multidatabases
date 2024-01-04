@@ -1,4 +1,5 @@
-```DOCKER
+### Run postgres image
+```
 docker run \
     --name postgres \
     -e POSTGRES_USER="hudson" \
@@ -8,14 +9,15 @@ docker run \
     -d \
     postgres
 ```
-
+### See containers running
 ```
 docker ps 
 ```
-
+### Exec a command inside of a container
 ```
 docker exec -it postgres /bin/bash 
 ```
+### Run adminer image
 
 ```
 docker run \
@@ -24,7 +26,9 @@ docker run \
  --link postgres:postgres \
  -d \
  adminer 
- ```
+
+```
+### Run mongodb image
 ```
 docker run \
     --name mongodb \
@@ -34,6 +38,7 @@ docker run \
     -d \
     mongo:4
 ```
+### Run mongoclient image
 ```
 docker run \
     --name mongoclient \
@@ -42,8 +47,13 @@ docker run \
     -d \
     mongoclient/mongoclient
 ```
+### command to create a user on DB, dont works for me 
 ```
 docker exec -it mongodb \
     mongo --host localhost -u hudson -p senha --authenticationDatabase admin \
     --eval "db.getSiblingDB('herois').createUser({user: 'admin2', pwd 'senha', roles: [{role: 'readWrite', db: 'herois'}]})"
 ```
+
+All of this was replaced to docker-composer.yml 
+
+
