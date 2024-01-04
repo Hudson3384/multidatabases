@@ -1,0 +1,20 @@
+version: '3.9'
+services:  
+  mongodb: 
+    image: mongo:4
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks: 
+      - multidb
+  mongoclient: 
+    image: mongoclient/mongoclient
+    ports: 
+      - 3000:3000
+    networks:
+      - multidb
+networks:
+  multidb:
+
+
+
