@@ -1,19 +1,5 @@
-class NotImplementedException extends Error {
-  constructor() {
-    super("Not Implemented Exception");
-  }
-}
+const contextMongo = new ContextStrategy(new MongoDB());
+contextMongo.create();
 
-class ICrud {
-  create(item) {
-    throw new NotImplementedException()
-  }
-  read(query) {
-    throw new NotImplementedException()
-  }
-  update(id, item) {
-    throw new NotImplementedException()
-  }
-  update(id) {
-    throw new NotImplementedException()
-}
+const contextPostgres = new ContextStrategy(new Postgres());
+contextPostgres.create();

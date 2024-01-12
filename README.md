@@ -28,6 +28,13 @@ docker run \
  adminer 
 
 ```
+
+### How to connect adminer with postgres 
+
+> Acess the [page](http://localhost:8080)
+> Insert the acess infos on .env file 
+> Use the container name as server name 
+
 ### Run mongodb image
 ```
 docker run \
