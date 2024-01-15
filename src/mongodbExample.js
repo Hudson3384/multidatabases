@@ -41,4 +41,10 @@ const heroSchema = new Mongoose.Schema({
 
 const model = Mongoose.model("hero", heroSchema);
 
-async function main() {}
+async function main() {
+  const result = await model.create({
+    name: "Batman",
+    power: "Money",
+  });
+  const list = await model.find();
+}

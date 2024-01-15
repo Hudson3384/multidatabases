@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/tests/*.test.js"
+    "test": "mocha src/tests/*.test.js",
+    "test:watch": "mocha -w src/tests/*.test.js"
   },
   "dependencies": {
     "mongoose": "^8.0.4",
