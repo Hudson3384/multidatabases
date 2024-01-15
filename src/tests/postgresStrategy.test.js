@@ -1,9 +1,11 @@
 require("./test.config");
 const assert = require("assert");
-const Postgres = require("../db/strategies/postgres");
+const Postgres = require("../db/strategies/postgres/postgres.js");
 const Context = require("../db/strategies/base/contextStrategy");
+const HeroSchema = require("../db/strategies/postgres/schemas/heroSchema");
 
-const context = new Context(new Postgres());
+let context = {};
+
 const MOCK_HERO_CREATE = {
   name: "Gaviao negro",
   power: "arrows",
@@ -16,12 +18,16 @@ const MOCK_HERO_UPDATE = {
 describe("postgres strategy", function () {
   this.timeout(Infinity);
   this.beforeAll(async () => {
-    await context.connect();
+    const connection = await Postgres.connect();
+    const model = await Postgres.defineModel(connection, HeroSchema);
+    context = new Context(new Postgres(connection, model));
     await context.delete();
     await context.create(MOCK_HERO_UPDATE);
   });
   it("PostgresSQL Connection", async function () {
+    this.timeout(3000);
     const result = await context.isConnected();
+    console.log(result, "result");
     assert.equal(result, true);
   });
   it("Create Item", async function () {

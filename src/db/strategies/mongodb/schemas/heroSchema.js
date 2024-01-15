@@ -13,8 +13,5 @@ const heroSchema = new Mongoose.Schema({
     default: new Date(),
   },
 });
-try {
-  module.exports = Mongoose.model("heros");
-} catch (error) {
-  module.exports = Mongoose.model("heros", heroSchema);
-}
+
+module.exports = Mongoose.models.herois || Mongoose.model("herois", heroSchema);
