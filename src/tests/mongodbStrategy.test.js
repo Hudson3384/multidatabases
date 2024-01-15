@@ -1,6 +1,7 @@
 require("./test.config");
 const assert = require("assert");
-const Mongo = require("../db/strategies/mongodb");
+const MongodB = require("../db/strategies/mongodb/mongodb");
+const HeroSchema = require("../db/strategies/mongodb/schemas/heroSchema");
 const Context = require("../db/strategies/base/contextStrategy");
 
 let MOCK_HERO_ID;
@@ -20,15 +21,16 @@ const MOCK_HEROS_UPDATE = {
   power: "Shock",
 };
 
-const context = new Context(new Mongo());
+let context = {};
 
 describe("MongoDB strategy", async function () {
   this.beforeAll(async () => {
-    await context.connect();
+    const connection = await MongodB.connect();
+    context = new Context(new MongodB(connection, HeroSchema));
   });
   it("MongoDB Connection", async function () {
     const result = await context.isConnected();
-    assert.deepEqual(result, 1);
+    assert.deepEqual(result, "Connected");
   });
   it("create register", async () => {
     const { name, power } = await context.create(MOCK_HEROS_CREATE);
