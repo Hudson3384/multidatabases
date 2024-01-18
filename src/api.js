@@ -1,6 +1,7 @@
 const Hapi = require("@hapi/hapi");
 const Context = require("./db/strategies/base/contextStrategy");
 const Mongodb = require("./db/strategies/mongodb/mongodb");
+const Joi = require("joi");
 const HeroSchema = require("./db/strategies/mongodb/schemas/heroSchema");
 const HeroRoutes = require("./routes/heroRoutes");
 
@@ -15,6 +16,7 @@ function mapRoutes(instance, methods) {
 async function main() {
   const connection = Mongodb.connect();
   const context = new Context(new Mongodb(connection, HeroSchema));
+  app.validator(Joi);
   app.route([...mapRoutes(new HeroRoutes(context), HeroRoutes.methods())]);
   await app.start();
   return app;
