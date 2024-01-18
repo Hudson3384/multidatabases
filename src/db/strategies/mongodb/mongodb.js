@@ -49,7 +49,7 @@ class MongoDB extends ICrud {
     return this._schema.updateOne({ _id: id }, { $set: newItem });
   }
   delete(id) {
-    return this._schema.deleteOne({ _id, id });
+    return this._schema.deleteOne({ _id: id });
   }
   async disconnect() {
     return await this._schema.close();

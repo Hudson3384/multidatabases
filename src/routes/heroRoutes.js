@@ -1,5 +1,6 @@
 const BaseRoute = require("./base/baseRoute");
 const Joi = require("joi");
+const Boom = require("boom");
 const failAction = (req, head, err) => {
   throw err;
 };
@@ -94,6 +95,34 @@ class HeroRoutes extends BaseRoute {
         } catch (err) {
           console.log(err);
           return "Internal Error on PATCH /heros";
+        }
+      },
+    };
+  }
+  delete() {
+    return {
+      path: "/heros/{id}",
+      method: "DELETE",
+      config: {
+        validate: {
+          failAction,
+          params: {
+            id: Joi.string().required(),
+          },
+        },
+      },
+      handler: async (request) => {
+        try {
+          const { id } = request.params;
+          throw Error("deu ruim");
+          const result = await this.db.delete(id);
+          if (result.deletedCount !== 1) {
+            return { message: "It not possible to delete the hero" };
+          }
+          return { message: "Hero deleted with success" };
+        } catch (err) {
+          console.error(err);
+          return Boom.internal();
         }
       },
     };

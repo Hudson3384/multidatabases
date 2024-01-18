@@ -12,8 +12,9 @@ const MOCK_HERO_INITIAL = {
 };
 
 let MOCK_ID = "";
-
+let MOCK_ID_DELETE = "";
 let app = {};
+
 describe("Heros Api test", function () {
   this.beforeAll(async () => {
     app = await api;
@@ -23,6 +24,12 @@ describe("Heros Api test", function () {
       payload: MOCK_HERO_CREATE,
     });
     MOCK_ID = JSON.parse(result.payload)._id;
+    const result2 = await app.inject({
+      method: "POST",
+      url: "/heros",
+      payload: MOCK_HERO_INITIAL,
+    });
+    MOCK_ID_DELETE = JSON.parse(result2.payload)._id;
   });
 
   this.afterAll(async () => {
@@ -89,7 +96,6 @@ describe("Heros Api test", function () {
 
   it("Update hero fails on Incorrect ID - PATCH /hero/:id ", async () => {
     const _id = `111111111111111111111111`;
-    console.log(MOCK_ID, "mok");
     const expected = {
       power: "Shield",
     };
@@ -103,5 +109,16 @@ describe("Heros Api test", function () {
     const data = JSON.parse(result.payload);
     assert.ok(result.statusCode === 200);
     assert.deepEqual(data.message, "It not possible to update the hero");
+  });
+
+  it("Delete item - /hero/:id", async () => {
+    const result = await app.inject({
+      method: "DELETE",
+      url: `/heros/${MOCK_ID_DELETE}`,
+    });
+    const statusCode = result.statusCode;
+    const data = JSON.parse(result.payload);
+    assert.ok(statusCode === 200);
+    assert.deepEqual(data.message, "Hero deleted with success");
   });
 });
