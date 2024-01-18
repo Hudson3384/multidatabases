@@ -5,10 +5,24 @@ const MOCK_HERO_CREATE = {
   name: "Chapolin colorado",
   power: "Marreta biônica",
 };
+
+const MOCK_HERO_INITIAL = {
+  name: "Captain America",
+  power: "Shield",
+};
+
+let MOCK_ID = "";
+
 let app = {};
 describe("Heros Api test", function () {
   this.beforeAll(async () => {
     app = await api;
+    const result = await app.inject({
+      method: "POST",
+      url: "/heros",
+      payload: MOCK_HERO_CREATE,
+    });
+    MOCK_ID = JSON.parse(result.payload)._id;
   });
 
   this.afterAll(async () => {
@@ -55,5 +69,39 @@ describe("Heros Api test", function () {
     assert.ok(statusCode === 200);
     assert.deepEqual(message, "Hero Created");
     assert.notStrictEqual(_id, undefined);
+  });
+  it("Update hero - PATCH /hero/:id ", async () => {
+    const _id = MOCK_ID;
+    const expected = {
+      power: "Shield",
+    };
+
+    const result = await app.inject({
+      method: "PATCH",
+      url: `/heros/${_id}`,
+      payload: JSON.stringify(expected),
+    });
+
+    const data = JSON.parse(result.payload);
+    assert.ok(result.statusCode === 200);
+    assert.deepEqual(data.message, "Hero updated with success");
+  });
+
+  it("Update hero fails on Incorrect ID - PATCH /hero/:id ", async () => {
+    const _id = `111111111111111111111111`;
+    console.log(MOCK_ID, "mok");
+    const expected = {
+      power: "Shield",
+    };
+
+    const result = await app.inject({
+      method: "PATCH",
+      url: `/heros/${_id}`,
+      payload: JSON.stringify(expected),
+    });
+
+    const data = JSON.parse(result.payload);
+    assert.ok(result.statusCode === 200);
+    assert.deepEqual(data.message, "It not possible to update the hero");
   });
 });
