@@ -15,6 +15,9 @@ class HeroRoutes extends BaseRoute {
       path: "/heros",
       method: "GET",
       config: {
+        tags: ["api"],
+        description: "List heros",
+        notes: "Pagination results and filter by name",
         validate: {
           failAction,
           query: {
@@ -41,6 +44,9 @@ class HeroRoutes extends BaseRoute {
       path: "/heros",
       method: "POST",
       config: {
+        tags: ["api"],
+        description: "Create Hero",
+        notes: "Create Hero by name and power",
         validate: {
           failAction,
           payload: {
@@ -69,6 +75,9 @@ class HeroRoutes extends BaseRoute {
       path: "/heros/{id}",
       method: "PATCH",
       config: {
+        tags: ["api"],
+        description: "Update hero by id",
+        notes: "Update name and/or power",
         validate: {
           failAction,
           params: {
@@ -104,6 +113,9 @@ class HeroRoutes extends BaseRoute {
       path: "/heros/{id}",
       method: "DELETE",
       config: {
+        tags: ["api"],
+        description: "Delete hero by id",
+        notes: "Delete user on database",
         validate: {
           failAction,
           params: {
@@ -114,7 +126,6 @@ class HeroRoutes extends BaseRoute {
       handler: async (request) => {
         try {
           const { id } = request.params;
-          throw Error("deu ruim");
           const result = await this.db.delete(id);
           if (result.deletedCount !== 1) {
             return { message: "It not possible to delete the hero" };
