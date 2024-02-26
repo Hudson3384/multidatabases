@@ -33,7 +33,7 @@ describe("Heros Api test", function () {
   });
 
   this.afterAll(async () => {
-    //app.stop();
+    app.stop();
   });
   it("list heros", () => async () => {
     const result = await app.inject({
